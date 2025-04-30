@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+.pacifico-regular {
+  font-family: "Pacifico", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+html {
+  background-color: #8a6bf108;
+  /* font-family: "pacifico"; */
+  font-family: "Manrope", sans-serif;
+}
