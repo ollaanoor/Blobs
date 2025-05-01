@@ -93,7 +93,7 @@ export default function EditProfileForm(props) {
   return (
     <div>
       <dialog ref={dialogRef} className="modal">
-        <div className="modal-box w-[30%] max-w-5xl rounded-2xl">
+        <div className="modal-box w-[95%] sm:w-[80%] md:w-[60%] lg:w-[40%] max-w-5xl rounded-2xl">
           <h3 className="font-bold text-lg flex gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -237,7 +237,8 @@ export default function EditProfileForm(props) {
 
             <button
               onClick={handleSubmit(handleUpdate)}
-              className="btn text-white text-lg bg-[#8a6bf1] hover:bg-[#8a6bf1dd] rounded-2xl h-[50px] w-[100px]"
+              //   className="btn text-white text-lg bg-[#8a6bf1] hover:bg-[#8a6bf1dd] rounded-2xl h-[50px] w-[100px]"
+              className="btn text-white text-lg bg-[#8a6bf1] hover:bg-[#8a6bf1dd] rounded-2xl h-[50px] w-full sm:w-[100px]"
             >
               Save
             </button>

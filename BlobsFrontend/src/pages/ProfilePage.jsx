@@ -131,33 +131,67 @@ export default function ProfilePage() {
     <div>
       <Header />
       {userProfile && (
-        <div className="flex items-center gap-3 m-5 md:mx-auto w-full md:w-[70%]">
+        // <div className="flex items-center gap-3 m-5 md:mx-auto w-full md:w-[70%]">
+        //   <div className="avatar">
+        //     <div className="w-15 md:w-25 rounded-full">
+        //       <img src={userProfile.profilePicture} />
+        //     </div>
+        //   </div>
+
+        //   <div className="flex md:flex-col gap-2">
+        //     <h2 className="card-title text-lg md:text-3xl">
+        //       {userProfile.username}
+        //     </h2>
+        //     {isAuthUser && (
+        //       <div
+        //         className="flex  md:justify-normal justify-between items-center gap-1 bg-[#8a6bf138] btn rounded-full md:rounded-xl"
+        //         onClick={() => modalRef.current?.showModal()}
+        //       >
+        //         <svg
+        //           xmlns="http://www.w3.org/2000/svg"
+        //           viewBox="0 0 24 24"
+        //           fill="#8a6bf1"
+        //           className="size-4"
+        //         >
+        //           <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
+        //         </svg>
+
+        //         <span className="text-[#8a6bf1] hidden md:block text-sm p-[3px] font-semibold ">
+        //           Edit Profile
+        //         </span>
+        //       </div>
+        //     )}
+        //   </div>
+        // </div>
+        <div className="flex flex-col md:flex-row items-center gap-4 md:mx-auto w-full md:w-[70%]">
           <div className="avatar">
-            <div className="w-15 md:w-25 rounded-full">
+            <div className="w-20 md:w-32 rounded-full">
               <img src={userProfile.profilePicture} />
             </div>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <h2 className="card-title text-lg md:text-3xl">{userProfile.username}</h2>
+          <div className="flex flex-col items-center md:items-start gap-2 text-center md:text-left">
+            <h2 className="card-title text-xl md:text-3xl">
+              {userProfile.username}
+            </h2>
+
             {isAuthUser && (
-              <div
-                className="flex items-center gap-1 bg-[#8a6bf138] btn-md rounded-md md:btn md:rounded-xl"
+              <button
+                className="flex items-center gap-1 bg-[#8a6bf138] hover:bg-[#8a6bf150] transition-colors px-3 py-2 text-sm md:text-base rounded-full"
                 onClick={() => modalRef.current?.showModal()}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="#8a6bf1"
-                  className="size-4 ml-1 md:ml-0"
+                  className="w-4 h-4 md:w-5 md:h-5"
                 >
                   <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
                 </svg>
-
-                <span className="text-[#8a6bf1] text-sm p-[3px] font-semibold">
+                <span className="text-[#8a6bf1] font-semibold hidden sm:inline">
                   Edit Profile
                 </span>
-              </div>
+              </button>
             )}
           </div>
         </div>
