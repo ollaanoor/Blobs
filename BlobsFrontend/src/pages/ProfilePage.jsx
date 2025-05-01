@@ -131,30 +131,30 @@ export default function ProfilePage() {
     <div>
       <Header />
       {userProfile && (
-        <div className="flex items-center gap-3 mx-auto w-[70%]">
+        <div className="flex items-center gap-3 m-5 md:mx-auto w-full md:w-[70%]">
           <div className="avatar">
-            <div className="w-25 rounded-full">
+            <div className="w-15 md:w-25 rounded-full">
               <img src={userProfile.profilePicture} />
             </div>
           </div>
 
           <div className="flex flex-col gap-2">
-            <h2 className="card-title text-3xl">{userProfile.username}</h2>
+            <h2 className="card-title text-lg md:text-3xl">{userProfile.username}</h2>
             {isAuthUser && (
               <div
-                className="flex gap-2 bg-[#8a6bf138] btn rounded-xl"
+                className="flex items-center gap-1 bg-[#8a6bf138] btn-md rounded-md md:btn md:rounded-xl"
                 onClick={() => modalRef.current?.showModal()}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="#8a6bf1"
-                  className="size-4"
+                  className="size-4 ml-1 md:ml-0"
                 >
                   <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
                 </svg>
 
-                <span className="text-[#8a6bf1] text-sm font-semibold">
+                <span className="text-[#8a6bf1] text-sm p-[3px] font-semibold">
                   Edit Profile
                 </span>
               </div>
@@ -163,7 +163,7 @@ export default function ProfilePage() {
         </div>
       )}
       {isAuthUser && (
-        <div className="card bg-base-100 w-[70%] h-fit shadow-sm mx-auto my-5 rounded-4xl">
+        <div className="card bg-base-100 w-full md:w-[70%] h-fit shadow-sm mx-auto my-5 md:rounded-4xl">
           <div className="card-body">
             <CreatePost loggedUser={loggedUser} createPost={handleCreatePost} />
           </div>

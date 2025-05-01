@@ -28,13 +28,10 @@ export default function HomePage() {
 
   useEffect(() => {
     axios
-      .get(
-        `${baseURL}/api/posts`,
-        {
-          params: query,
-          withCredentials: true,
-        }
-      )
+      .get(`${baseURL}/api/posts`, {
+        params: query,
+        withCredentials: true,
+      })
       .then((res) => {
         // setPosts(res.data.reverse());
         setPosts((prev) => [...prev, ...res.data.posts]);
@@ -92,7 +89,7 @@ export default function HomePage() {
       <Header />
       <div className="">
         {loggedUser && (
-          <div className="card bg-base-100 w-[70%] h-fit shadow-sm mx-auto my-5 rounded-4xl">
+          <div className="card bg-base-100 w-full md:w-[70%] h-fit shadow-sm mx-auto my-5 md:*:rounded-4xl">
             <div className="card-body">
               <div className="flex items-center gap-3">
                 <div className="avatar">
@@ -107,7 +104,7 @@ export default function HomePage() {
           </div>
         )}
 
-        <div className="divider w-[70%] mx-auto text-gray-400 font-bold">
+        <div className="divider w-full md:w-[70%] mx-auto text-gray-400 font-bold">
           Blobs
         </div>
 
