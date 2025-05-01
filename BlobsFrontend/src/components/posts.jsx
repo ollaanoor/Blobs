@@ -5,13 +5,18 @@ import { useUser } from "../contexts/UserContext";
 import EditPostForm from "./EditPostForm";
 import { NavLink } from "react-router";
 
-export default function Posts(props) {
-  // const { loggedUser } = useUser();
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-  let updatedAt = new Date(props.post.updatedAt).toLocaleString();
+export default function Posts(props) {
+  const { loggedUser } = useUser();
+  
+  let date = new Date(props.post.createdAt);
+  let createdAt = `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  })}`;
 
   const [user, setUser] = useState({});
-  // const [editModalState, setEditModalState] = useState(false);
   const modalRef = useRef();
   // const getUserbyId = async () => {
   //   try {
@@ -29,7 +34,7 @@ export default function Posts(props) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/api/users/${props.post.user}`, {
+      .get(`${baseURL}/api/users/${props.post.user}`, {
         withCredentials: true,
       })
       .then((res) => setUser(res.data))
@@ -40,7 +45,7 @@ export default function Posts(props) {
     <>
       <div className="card bg-base-100 w-[70%] h-fit max-h-[800px] shadow-sm mx-auto my-5 rounded-4xl">
         <div className="card-body max-h-[200px]">
-          {props.loggedUser && props.loggedUser._id == props.post.user && (
+          {loggedUser && loggedUser._id == props.post.user && (
             <div className="dropdown dropdown-end absolute top-4 right-5 hover:bg-[#8a6bf150] transition p-1 rounded-full">
               <label tabIndex={0} className="" role="button">
                 <svg
@@ -65,8 +70,6 @@ export default function Posts(props) {
                 <li>
                   <a
                     onClick={() =>
-                      // document.getElementById(`${props.post._id}`).showModal()
-                      // setEditModalState(true)
                       modalRef.current?.showModal()
                     }
                   >
@@ -110,7 +113,7 @@ export default function Posts(props) {
             </div>
           )}
 
-          <div className="flex justify-between items-center gap-3 mt-3">
+          <div className="flex justify-between items-center gap-3 mt-5">
             <div className="avatar">
               <div className="w-12 rounded-full">
                 <img src={user.profilePicture} />
@@ -125,15 +128,32 @@ export default function Posts(props) {
               </h2>
             </div>
             <div className="justify-end ml-6">
-              <span className="text-gray-400 font-medium">{updatedAt}</span>
+              <span className="text-gray-400 font-medium">{createdAt}</span>
+              {props.post.createdAt != props.post.updatedAt && (
+                <div className="text-gray-400 font-medium flex gap-1 justify-end">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    className="size-4"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M11.013 2.513a1.75 1.75 0 0 1 2.475 2.474L6.226 12.25a2.751 2.751 0 0 1-.892.596l-2.047.848a.75.75 0 0 1-.98-.98l.848-2.047a2.75 2.75 0 0 1 .596-.892l7.262-7.261Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span>Edited</span>
+                </div>
+              )}
             </div>
           </div>
           {props.post.title && (
-            <p className="text-lg font-semibold m-3 whitespace-pre-line">
+            <p className="text-lg font-semibold mt-3 ml-2 overflow-hidden text-ellipsis whitespace-nowrap">
               {props.post.title}
             </p>
           )}
-          <p className="text-lg font-normal m-3 whitespace-pre-line">
+          <p className="text-lg font-normal mt-3 ml-2 whitespace-pre-line overflow-ellipsis">
             {props.post.content}
           </p>
         </div>

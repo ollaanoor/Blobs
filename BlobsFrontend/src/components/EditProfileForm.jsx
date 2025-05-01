@@ -1,16 +1,14 @@
-import React, { useEffect } from "react";
-import { NavLink, useNavigate } from "react-router";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Footer from "../components/footer";
-import Header from "../components/header";
 import { useUser } from "../contexts/UserContext";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-export default function RegisterPage() {
-  const { loggedUser } = useUser();
+export default function EditProfileForm(props) {
   const navigate = useNavigate();
+  const { loggedUser, setLoggedUser } = useUser();
 
   const {
     register,
@@ -18,78 +16,113 @@ export default function RegisterPage() {
     watch,
     setError,
     clearErrors,
+    reset,
     formState: { errors },
   } = useForm();
 
   const profilePicture = watch("profilePicture");
 
-  const onSubmit = async (data) => {
+  //   const defaultForm = {
+  //     username: "",
+  //     email: "",
+  //     image: "",
+  //   };
+  //   const [form, setForm] = useState(defaultForm);
+  const [imageRemoved, setImageRemoved] = useState(false);
+  const dialogRef = props.modalRef;
+
+  //   const handleImageChange = (e) => {
+  //     setImageRemoved(false);
+  //     const file = e.target.files[0];
+  //     if (file) {
+  //       setForm({ ...form, image: file });
+  //     }
+  //   };
+
+  const removeImage = () => {
+    setImageRemoved(true);
+  };
+
+  const exitUpdate = () => {
+    setImageRemoved(false);
+    clearErrors();
+    reset();
+    // setForm(() => ({ ...defaultForm }));
+    dialogRef.current?.close();
+  };
+
+  const handleUpdate = async (data) => {
     const formData = new FormData();
 
     formData.append("username", data.username);
     formData.append("email", data.email);
-    formData.append("password", data.password);
-    formData.append("confirmPassword", data.confirmPassword);
+    if (data.password) {
+      formData.append("password", data.password);
+      formData.append("confirmPassword", data.confirmPassword);
+    }
     if (data.profilePicture?.[0]) {
       formData.append("profilePicture", data.profilePicture[0]);
     }
 
     try {
-      await axios.post(`${baseURL}/api/auth/register`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const { data } = await axios.put(`${baseURL}/api/auth/update`, formData, {
+        withCredentials: true,
       });
 
-      // Redirect user to login
-      navigate("/login");
+      setLoggedUser(data.user);
+      navigate(`/profile/${data.user.username}`);
+      dialogRef.current?.close();
     } catch (error) {
       setError("root.serverError", {
         type: "500",
         message: "The username or email already exists.",
       });
-      console.log("Could not register. Try again");
+      console.log("Could not update. Try again");
     }
   };
 
   useEffect(() => {
     if (loggedUser) {
-      navigate("/", { replace: true });
+      reset({
+        username: loggedUser.username,
+        email: loggedUser.email,
+      });
     }
   }, [loggedUser]);
 
   return (
     <div>
-      <Header />
-      <div className="flex flex-col md:flex-row items-center justify-center px-6 md:px-20 py-16 gap-12">
-        <div className="text-center md:w-1/2">
-          <img
-            src="/blobs-logo-color.svg"
-            className="mx-auto mb-6 w-32 md:w-44"
-          />
-          <h1 className="text-3xl md:text-5xl font-medium hidden md:block">
-            Step out of your bubble <br className="hidden md:block" />
-            and share your thoughts...
-          </h1>
-        </div>
+      <dialog ref={dialogRef} className="modal">
+        <div className="modal-box w-[30%] max-w-5xl rounded-2xl">
+          <h3 className="font-bold text-lg flex gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="#8a6bf1"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+              />
+            </svg>
+            Edit profile
+          </h3>
 
-        <div className="w-full md:w-[40%]">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            encType="multipart/form-data"
-            className="bg-[#8a6bf115] rounded-2xl p-6 sm:p-10 flex flex-col gap-5 shadow-md"
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#8a6bf1] text-center md:text-left">
-              Create an account
-            </h2>
-
-            <div className="flex flex-col items-center gap-3">
+          <div className="flex flex-col gap-5 items-center justify-between my-2">
+            <div className="flex flex-col items-center gap-3 mx-auto">
               <img
                 className="rounded-full h-28 w-28 border-2 border-gray-400 object-cover"
                 src={
-                  profilePicture?.[0]
+                  imageRemoved
+                    ? "https://i.ibb.co/vvssHm4Q/Unknown-person.jpg"
+                    : profilePicture instanceof FileList &&
+                      profilePicture.length > 0
                     ? URL.createObjectURL(profilePicture[0])
-                    : "https://i.ibb.co/vvssHm4Q/Unknown-person.jpg"
+                    : loggedUser?.profilePicture
                 }
                 alt="Profile Preview"
               />
@@ -100,12 +133,14 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-4 w-full">
               <label className="label text-lg font-bold">Username</label>
               <input
                 type="text"
                 name="username"
-                {...register("username", { required: "Username is required" })}
+                {...register("username", {
+                  required: "Username is required",
+                })}
                 onChange={() => clearErrors(["username", "root.serverError"])}
                 className={`input input-lg input-bordered w-full text-lg rounded-xl ${
                   errors.username ? "input-error" : ""
@@ -146,7 +181,6 @@ export default function RegisterPage() {
                 type="password"
                 name="password"
                 {...register("password", {
-                  required: "Password is required",
                   minLength: {
                     value: 6,
                     message: "Password must be at least 6 characters",
@@ -171,9 +205,14 @@ export default function RegisterPage() {
                 type="password"
                 name="confirmPassword"
                 {...register("confirmPassword", {
-                  required: "Please confirm your password",
-                  validate: (value) =>
-                    value === watch("password") || "Passwords do not match",
+                  validate: (value) => {
+                    if (watch("password")) {
+                      if (!value) return "Please confirm your password";
+                      if (value !== watch("password"))
+                        return "Passwords do not match";
+                    }
+                    return true;
+                  },
                 })}
                 onChange={() =>
                   clearErrors(["confirmPassword", "root.serverError"])
@@ -195,29 +234,42 @@ export default function RegisterPage() {
                 {errors.root.serverError.message}
               </p>
             )}
+
             <button
-              type="submit"
-              className="btn rounded-3xl text-white bg-[#8a6bf1] btn-lg mt-4 hover:shadow-lg transition"
+              onClick={handleSubmit(handleUpdate)}
+              className="btn text-white text-lg bg-[#8a6bf1] hover:bg-[#8a6bf1dd] rounded-2xl h-[50px] w-[100px]"
             >
-              Sign up
+              Save
             </button>
+          </div>
 
-            <div className="text-center md:text-left mt-2">
-              <span className="text-lg text-gray-400 font-bold mr-2">
-                Already have an account?
-              </span>
-              <NavLink
-                to="/login"
-                className="text-lg text-[#8a6bf1] font-medium hover:underline"
+          <div className="modal-action">
+            <form method="dialog">
+              <button
+                onClick={() => {
+                  exitUpdate();
+                }}
+                className="btn btn-sm btn-circle btn-ghost hover:bg-[#8a6bf166] absolute right-2 top-2"
               >
-                Log in
-              </NavLink>
-            </div>
-          </form>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-
-      <Footer />
+      </dialog>
     </div>
   );
 }

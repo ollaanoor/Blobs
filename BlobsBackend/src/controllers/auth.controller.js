@@ -6,7 +6,6 @@ const uploadToImgBB = require("../../utils/uploadToImgBB.js");
 // Register
 exports.register = async (req, res) => {
   try {
-
     let profilePicUrl = null;
 
     if (req.file) {
@@ -66,6 +65,27 @@ exports.login = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const updates = req.body;
+    console.log(updates);
+    
+    if (updates.email) {
+      const existingEmailUser = await User.findOne({
+        email: updates.email,
+        _id: { $ne: req.user },
+      });
+      if (existingEmailUser) {
+        return res.status(409).json({ message: "Email already in use" });
+      }
+    }
+    
+    if (updates.username) {
+      const existingUsernameUser = await User.findOne({
+        username: updates.username,
+        _id: { $ne: req.user },
+      });
+      if (existingUsernameUser) {
+        return res.status(409).json({ message: "Username already in use" });
+      }
+    }
 
     if (req.file) {
       const { url } = await uploadToImgBB(

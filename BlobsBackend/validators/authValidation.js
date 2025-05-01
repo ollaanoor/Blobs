@@ -21,7 +21,7 @@ const updateProfileSchema = joi.object({
     then: joi.required(),
     otherwise: joi.forbidden(),
   }),
-  profilePicture: joi.string().uri(),
+  profilePicture: joi.any().optional(),
 });
 
 module.exports = {

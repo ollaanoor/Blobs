@@ -1,24 +1,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+
 const PostContext = createContext();
 
 export const PostProvider = ({ children }) => {
-  //   const [posts, setPosts] = useState([]);
 
   // API Calls
-  //   const fetchAllPosts = async () => {
-  //     try {
-  //       const { data } = await axios.get(`http://localhost:3000/api/posts`, {
-  //         withCredentials: true,
-  //       });
-  //       setPosts(data.reverse());
-  //       //   return data;
-  //     } catch (error) {
-  //       console.log("Could not get posts. Try again");
-  //     }
-  //   };
-
   const createPost = async (title, content, image) => {
     const formData = new FormData();
 
@@ -30,7 +19,7 @@ export const PostProvider = ({ children }) => {
 
     try {
       const { data: post } = await axios.post(
-        "http://localhost:3000/api/posts",
+        `${baseURL}/api/posts`,
         formData,
         {
           headers: {
@@ -41,7 +30,6 @@ export const PostProvider = ({ children }) => {
       );
       //   setPosts((prevPosts) => [post, ...prevPosts]);
       //   setPosts([post, ...posts]);
-      console.log("Created post response:", post);
       return post;
     } catch (error) {
       console.log("Could not post. Try again");
@@ -51,7 +39,7 @@ export const PostProvider = ({ children }) => {
   const deletePost = async (postId) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:3000/api/posts/${postId}`,
+        `${baseURL}/api/posts/${postId}`,
         {
           withCredentials: true,
         }
@@ -80,7 +68,7 @@ export const PostProvider = ({ children }) => {
 
     try {
       const { data: post } = await axios.put(
-        `http://localhost:3000/api/posts/${id}`,
+        `${baseURL}/api/posts/${id}`,
         formData,
         {
           headers: {

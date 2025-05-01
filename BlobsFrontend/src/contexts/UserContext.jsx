@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -10,7 +12,7 @@ export const UserProvider = ({ children }) => {
   const fetchLoggedUser = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:3000/api/auth/profile",
+        `${baseURL}/api/auth/profile`,
         {
           withCredentials: true,
         }

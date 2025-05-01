@@ -1,33 +1,48 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import axios from "axios";
+import InfiniteScroll from "react-infinite-scroll-component";
+
 import { useUser } from "../contexts/UserContext";
 import { usePostAPI } from "../contexts/PostContext";
+
 import Header from "../components/header";
 import CreatePost from "../components/CreatePost";
 import Posts from "../components/posts";
+import EditProfileForm from "../components/EditProfileForm";
+
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export default function ProfilePage() {
+  const navigate = useNavigate();
+  const modalRef = useRef();
+
+  // Contexts
   const { loggedUser } = useUser();
   const { createPost, deletePost, updatePost } = usePostAPI();
 
+  // States
   const [userProfile, setUserProfile] = useState();
   const [userPosts, setUserPosts] = useState([]);
 
-  // const location = useLocation();
-  // console.log(location.state.userId);
+  // Infinite Scroll States
+  const [page, setPage] = useState(1);
+  const [totalPosts, setTotalPosts] = useState(0);
+  const lastPost = userPosts[userPosts.length - 1];
+  const cursor = lastPost?.createdAt;
+  const query = { limit: 10 };
+  if (cursor) query.cursor = cursor;
 
-  const params = useParams(); // check username with params if not same for the id display page not found
-  // console.log(params.username);
+  const params = useParams();
 
-  // const isAuthUser = location.state.userId === loggedUser._id ? true : false;
+  // Check if the profile page is showing the logged in user's profile
   const isAuthUser = params.username === loggedUser?.username;
 
   const fetchUserProfile = async () => {
     if (!isAuthUser) {
       try {
         const { data } = await axios.get(
-          `http://localhost:3000/api/users/name/${params.username}`,
+          `${baseURL}/api/users/name/${params.username}`,
           {
             withCredentials: true,
           }
@@ -46,13 +61,14 @@ export default function ProfilePage() {
 
   const fetchUserPosts = async (userId) => {
     try {
-      const { data } = await axios.get(
-        `http://localhost:3000/api/posts/${userId}`,
-        {
-          withCredentials: true,
-        }
-      );
-      setUserPosts(data.reverse());
+      const { data } = await axios.get(`${baseURL}/api/posts/${userId}`, {
+        params: query,
+        withCredentials: true,
+      });
+      // setUserPosts(data.reverse());
+      setUserPosts((prev) => [...prev, ...data.posts]);
+      // setUserPosts([ ...userPosts, ...data.posts ]);
+      if (page === 1) setTotalPosts(() => data.total);
     } catch (err) {
       console.log("No posts found.");
     }
@@ -63,12 +79,17 @@ export default function ProfilePage() {
       const user = await fetchUserProfile();
       if (user) {
         await fetchUserPosts(user._id);
-        // setUserPosts(posts.filter((post) => post.user === user._id));
+      } else {
+        navigate("/error");
       }
     };
 
     init();
-  }, []);
+
+    // if (isAuthUser && params.username !== loggedUser?.username) {
+    //   navigate(`/profile/${loggedUser.username}`);
+    // }
+  }, [page, loggedUser]);
 
   const handleCreatePost = async (content, image) => {
     try {
@@ -108,7 +129,7 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <Header loggedUser={loggedUser} />
+      <Header />
       {userProfile && (
         <div className="flex items-center gap-3 mx-auto w-[70%]">
           <div className="avatar">
@@ -120,7 +141,10 @@ export default function ProfilePage() {
           <div className="flex flex-col gap-2">
             <h2 className="card-title text-3xl">{userProfile.username}</h2>
             {isAuthUser && (
-              <div className="flex gap-2 bg-[#8a6bf138] btn rounded-xl">
+              <div
+                className="flex gap-2 bg-[#8a6bf138] btn rounded-xl"
+                onClick={() => modalRef.current?.showModal()}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -148,15 +172,36 @@ export default function ProfilePage() {
       <div className="divider w-[70%] mx-auto text-gray-400 font-bold">
         {params.username + "'s posts"}
       </div>
-      {userPosts.map((post) => (
-        <Posts
-          loggedUser={loggedUser}
-          key={post._id}
-          post={post}
-          deletePost={handleDeletePost}
-          updatePost={handleUpdatePost}
-        />
-      ))}
+
+      <InfiniteScroll
+        dataLength={userPosts.length}
+        next={() => {
+          // console.log("Fetching more posts...");
+          setPage((prev) => prev + 1);
+        }}
+        hasMore={userPosts.length < totalPosts}
+        loader={
+          <h4 className="text-center my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
+            Loading more...
+          </h4>
+        }
+        endMessage={
+          <p className="my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
+            No posts to show
+          </p>
+        }
+      >
+        {userPosts.map((post) => (
+          <Posts
+            key={post._id}
+            post={post}
+            deletePost={handleDeletePost}
+            updatePost={handleUpdatePost}
+          />
+        ))}
+      </InfiniteScroll>
+
+      <EditProfileForm modalRef={modalRef}></EditProfileForm>
     </div>
   );
 }

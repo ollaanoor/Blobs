@@ -3,8 +3,17 @@ const uploadToImgBB = require("../../utils/uploadToImgBB");
 
 const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find();
-    res.status(200).json(posts);
+    const limit = parseInt(req.query.limit);
+    const cursor = req.query.cursor;
+    const query = cursor ? { createdAt: { $lt: cursor } } : {};
+    // const skip = parseInt(req.query.skip);
+    const total = await Post.countDocuments();
+
+    const posts = await Post.find(query)
+      .sort({ createdAt: -1 }) // newest first
+      // .skip(skip)
+      .limit(limit);
+    res.status(200).json({ posts, total });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -21,9 +30,20 @@ const getAllPosts = async (req, res) => {
 
 const getPostByUserId = async (req, res) => {
   try {
-    const post = await Post.find({ user: req.params.id });
+    const limit = parseInt(req.query.limit);
+    const cursor = req.query.cursor;
+    const query = cursor
+      ? { user: req.params.id, createdAt: { $lt: cursor } }
+      : { user: req.params.id };
+    // const skip = parseInt(req.query.skip);
+    const total = await Post.countDocuments({ user: req.params.id });
+
+    const posts = await Post.find(query)
+      .sort({ createdAt: -1 }) // newest first
+      // .skip(skip)
+      .limit(limit);
     // const post = await Post.find({ user: req.user._id });
-    res.status(200).json(post);
+    res.status(200).json({ posts, total });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

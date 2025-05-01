@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function EditPostForm(props) {
@@ -42,7 +42,7 @@ export default function EditPostForm(props) {
   const exitUpdate = () => {
     setImageRemoved(false);
     clearErrors();
-    reset({ title: props.post.titlem, content: props.post.content });
+    reset({ title: props.post.title, content: props.post.content });
     setForm(() => ({ ...defaultForm }));
     dialogRef.current?.close();
   };
@@ -187,7 +187,6 @@ export default function EditPostForm(props) {
             <form method="dialog">
               <button
                 onClick={() => {
-                  document.getElementById(`${props.post._id}`).close();
                   exitUpdate();
                 }}
                 className="btn btn-sm btn-circle btn-ghost hover:bg-[#8a6bf166] absolute right-2 top-2"

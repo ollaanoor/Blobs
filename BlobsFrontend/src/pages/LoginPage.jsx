@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import LandingNavbar from "../components/LandingNavbar";
 import Footer from "../components/footer";
+import Header from "../components/header";
+import { useUser } from "../contexts/UserContext";
 
-export default function LoginPage(props) {
+const baseURL = import.meta.env.VITE_API_BASE_URL;
+
+export default function LoginPage() {
+  const { loggedUser, setLoggedUser } = useUser();
   const navigate = useNavigate();
 
   const {
@@ -19,7 +23,7 @@ export default function LoginPage(props) {
   const login = async (form) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        `${baseURL}/api/auth/login`,
         {
           ...form,
         },
@@ -28,8 +32,9 @@ export default function LoginPage(props) {
         }
       );
 
+      setLoggedUser(data.user);
       // Redirect user to home page
-      navigate("/home");
+      // navigate("/");
     } catch (error) {
       setError("root.serverError", {
         type: "400",
@@ -39,10 +44,16 @@ export default function LoginPage(props) {
     }
   };
 
+  useEffect(() => {
+    if (loggedUser) {
+      navigate("/", { replace: true });
+    }
+  }, [loggedUser]);
+
   return (
     <>
       {/* <div className="h-screen bg-cover bg-center bg-no-repeat bg-[url(/public/bg.png)]"> */}
-      <LandingNavbar />
+      <Header />
       <div className="flex flex-col md:flex-row items-center justify-center px-6 md:px-20 py-20 gap-12">
         <div className="text-center md:w-1/2">
           <img
