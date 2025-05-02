@@ -55,12 +55,12 @@ export default function LoginPage() {
       {/* <div className="h-screen bg-cover bg-center bg-no-repeat bg-[url(/public/bg.png)]"> */}
       <Header />
       <div className="flex flex-col md:flex-row items-center justify-center px-6 md:px-20 py-20 gap-12">
-        <div className="text-center md:w-1/2">
+        <div className="text-center md:w-1/2 hidden md:block">
           <img
             src="/blobs-logo-color.svg"
             className="mx-auto mb-5 w-40 md:w-52"
           />
-          <h1 className="text-4xl md:text-5xl font-medium hidden md:block">
+          <h1 className="text-4xl md:text-5xl font-medium">
             Step out of your bubble <br className="hidden md:block" />
             and share your thoughts...
           </h1>

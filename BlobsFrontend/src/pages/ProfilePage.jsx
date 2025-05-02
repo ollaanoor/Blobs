@@ -203,7 +203,7 @@ export default function ProfilePage() {
           </div>
         </div>
       )}
-      <div className="divider w-[70%] mx-auto text-gray-400 font-bold">
+      <div className="divider w-full md:w-[70%] mx-auto text-gray-400 font-bold">
         {params.username + "'s posts"}
       </div>
 

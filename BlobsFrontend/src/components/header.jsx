@@ -28,22 +28,22 @@ export default function Header() {
   return (
     <div>
       <div className="navbar bg-base-100 shadow-md mb-10">
-        <div className="flex-1 ml-10">
+        <div className="flex-1 ml-5 md:ml-10">
           <Link to="/" className="cursor-pointer text-3xl pacifico-regular">
             <img className="h-12" src="/blobs-logo-color.svg" />
           </Link>
         </div>
 
-        <div className="flex gap-6 items-center font-medium text-lg mr-10">
+        <div className="flex gap-6 items-center font-medium text-lg mr-5 md:mr-10">
           <div>
-            <NavLink to="/" className="hover:text-[#8a6bf1] transition">
+            <NavLink to="/" className="text-[#8a6bf1] hover:text-gray-500 transition">
               Home
             </NavLink>
           </div>
 
           {!loggedUser && (
             <div>
-              <NavLink to="/joinUs" className="hover:text-[#8a6bf1] transition">
+              <NavLink to="/joinUs" className="text-[#8a6bf1] hover:text-gray-500 transition">
                 Join Us
               </NavLink>
             </div>

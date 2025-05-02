@@ -62,7 +62,7 @@ export default function RegisterPage() {
     <div>
       <Header />
       <div className="flex flex-col md:flex-row items-center justify-center px-6 md:px-20 py-16 gap-12">
-        <div className="text-center md:w-1/2">
+        <div className="text-center md:w-1/2 hidden md:block">
           <img
             src="/blobs-logo-color.svg"
             className="mx-auto mb-6 w-32 md:w-44"

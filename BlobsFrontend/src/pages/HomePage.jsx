@@ -89,24 +89,26 @@ export default function HomePage() {
       <Header />
       <div className="">
         {loggedUser && (
-          <div className="card bg-base-100 w-full md:w-[70%] h-fit shadow-sm mx-auto my-5 md:rounded-4xl">
-            <div className="card-body">
-              <div className="flex items-center gap-3">
-                <div className="avatar">
-                  <div className="w-12 rounded-full ml-2">
-                    <img src={loggedUser.profilePicture} />
+          <div>
+            <div className="card bg-base-100 w-full md:w-[70%] h-fit shadow-sm mx-auto my-5 md:rounded-4xl">
+              <div className="card-body">
+                <div className="flex items-center gap-3">
+                  <div className="avatar">
+                    <div className="w-12 rounded-full ml-2">
+                      <img src={loggedUser.profilePicture} />
+                    </div>
                   </div>
+                  <h2 className="card-title text-xl">{loggedUser.username}</h2>
                 </div>
-                <h2 className="card-title text-xl">{loggedUser.username}</h2>
+                <CreatePost createPost={handleCreatePost} />
               </div>
-              <CreatePost createPost={handleCreatePost} />
+            </div>
+
+            <div className="divider w-full md:w-[70%] mx-auto text-gray-400 font-bold">
+              Blobs
             </div>
           </div>
         )}
-
-        <div className="divider w-full md:w-[70%] mx-auto text-gray-400 font-bold">
-          Blobs
-        </div>
 
         {/* {posts.map((post) => (
         <Posts

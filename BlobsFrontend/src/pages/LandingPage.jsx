@@ -26,7 +26,7 @@ export default function LandingPage() {
               className="mx-auto mb-10 w-40 md:w-52"
               alt="Blobs Logo"
             />
-            <h1 className="text-4xl md:text-5xl font-semibold">
+            <h1 className="text-4xl md:text-5xl font-semibold hidden md:block">
               Step out of your bubble <br /> and share your thoughts...
             </h1>
             <p className="text-lg mt-6 text-gray-500">
