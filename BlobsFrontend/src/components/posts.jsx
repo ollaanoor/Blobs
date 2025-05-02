@@ -44,7 +44,7 @@ export default function Posts(props) {
   return (
     <>
       <div className="card bg-base-100 w-full md:w-[70%] h-fit max-h-[800px] shadow-sm mx-auto my-5 md:rounded-4xl">
-        <div className="card-body max-h-[200px]">
+        <div className="card-body w-full">
           {loggedUser && loggedUser._id == props.post.user && (
             <div className="dropdown dropdown-end absolute top-4 right-5 hover:bg-[#8a6bf150] transition p-1 rounded-full">
               <label tabIndex={0} className="" role="button">
@@ -149,11 +149,11 @@ export default function Posts(props) {
             </div>
           </div>
           {props.post.title && (
-            <p className="text-lg font-semibold mt-3 ml-2 overflow-hidden text-ellipsis whitespace-nowrap">
+            <p className="text-lg font-semibold mt-3 ml-2 truncate max-w-[95%]">
               {props.post.title}
             </p>
           )}
-          <p className="text-lg font-normal mt-3 ml-2 whitespace-pre-line overflow-ellipsis">
+          <p className="text-lg font-normal mt-3 ml-2 truncate-3-lines max-w-[95%]">
             {props.post.content}
           </p>
         </div>

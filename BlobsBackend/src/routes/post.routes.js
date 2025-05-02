@@ -17,7 +17,7 @@ router.get("/:id", postController.getPostByUserId);
 
 router.post(
   "/",
-  // auth,
+  auth,
   upload.single("image"),
   validate(postSchema),
   postController.createPost

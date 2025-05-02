@@ -48,7 +48,6 @@ export default function HomePage() {
     } catch (error) {
       console.log("Error creating post", error);
     }
-    console.log(posts);
   };
 
   const handleDeletePost = async (postId) => {
@@ -90,7 +89,7 @@ export default function HomePage() {
       <Header />
       <div className="">
         {loggedUser && (
-          <div className="card bg-base-100 w-full md:w-[70%] h-fit shadow-sm mx-auto my-5 md:*:rounded-4xl">
+          <div className="card bg-base-100 w-full md:w-[70%] h-fit shadow-sm mx-auto my-5 md:rounded-4xl">
             <div className="card-body">
               <div className="flex items-center gap-3">
                 <div className="avatar">

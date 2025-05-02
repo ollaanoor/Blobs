@@ -30,6 +30,7 @@ export const PostProvider = ({ children }) => {
       );
       //   setPosts((prevPosts) => [post, ...prevPosts]);
       //   setPosts([post, ...posts]);
+      // console.log("API Response:", post);
       return post;
     } catch (error) {
       console.log("Could not post. Try again");

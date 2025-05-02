@@ -77,12 +77,12 @@ export default function CreatePost(props) {
       )}
       <textarea
         rows="3"
-        maxLength="200"
+        maxLength="800"
         name="content"
         {...register("content", {
           required: "Content is required.",
           maxLength: {
-            value: 200,
+            value: 800,
             message: "Max content length reached.",
           },
         })}
@@ -125,7 +125,6 @@ export default function CreatePost(props) {
         </div>
       )}
       <div className="divider"></div>
-      {/* <div className="border-t-2 rounded-t-4xl border-[#8a6bf1]"></div> */}
       <div className="flex items-center justify-between">
         <label className="flex gap-2 items-center cursor-pointer px-4 py-2 rounded-xl hover:scale-[1.05] transition bg-[#8a6bf138]">
           <svg
@@ -142,10 +141,10 @@ export default function CreatePost(props) {
               d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
             />
           </svg>
-          <span className="text-[#8a6bf1] font-medium">Add Image</span>
-          <input type="file" onChange={handleImageChange} className="hidden" />
+          <span className="text-[#8a6bf1] font-medium hidden md:block">Add Image</span>
+          <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
         </label>
-        <div className="flex gap-5">
+        <div className="flex gap-1 md:gap-5">
           {(form.title || form.content || form.image) && (
             <button
               onClick={cancelCreatePost}

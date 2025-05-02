@@ -101,12 +101,12 @@ export default function EditPostForm(props) {
 
           <textarea
             rows="3"
-            maxLength="200"
+            maxLength="800"
             name="content"
             {...register("content", {
               required: "Content is required.",
               maxLength: {
-                value: 200,
+                value: 800,
                 message: "Max content length reached.",
               },
             })}
