@@ -48,7 +48,7 @@ export default function HomePage() {
     } catch (error) {
       console.log("Error creating post", error);
     }
-    cobsole.log(posts);
+    console.log(posts);
   };
 
   const handleDeletePost = async (postId) => {
