@@ -148,7 +148,7 @@ export default function HomePage() {
           ))}
         </InfiniteScroll>
         {!loggedUser && (
-          <div className="btn btn-circle w-15 h-15 bg-[#8a6bf1] hover:bg-[#8a6bf1dd] fixed right-10 bottom-10">
+          <div className="btn btn-circle w-15 h-15 bg-[#8a6bf1] hover:bg-[#8a6bf1dd] fixed right-5 md:right-10 bottom-5 md:bottom-10">
             <Link to="/login">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
