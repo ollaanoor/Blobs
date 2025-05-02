@@ -27,7 +27,7 @@ export default function Header() {
 
   return (
     <div>
-      <div className="navbar bg-base-100 shadow-md mb-10">
+      <div className="navbar bg-base-100 shadow-md mb-5 md:mb-10">
         <div className="flex-1 ml-5 md:ml-10">
           <Link to="/" className="cursor-pointer text-3xl pacifico-regular">
             <img className="h-12" src="/blobs-logo-color.svg" />
