@@ -10,6 +10,7 @@ import Header from "../components/header";
 import CreatePost from "../components/CreatePost";
 import Posts from "../components/posts";
 import EditProfileForm from "../components/EditProfileForm";
+import toast from "react-hot-toast";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -18,7 +19,7 @@ export default function ProfilePage() {
   const modalRef = useRef();
 
   // Contexts
-  const { loggedUser } = useUser();
+  const { loggedUser, setLoggedUser } = useUser();
   const { createPost, deletePost, updatePost } = usePostAPI();
 
   // States
@@ -65,9 +66,14 @@ export default function ProfilePage() {
         params: query,
         withCredentials: true,
       });
-      // setUserPosts(data.reverse());
-      setUserPosts((prev) => [...prev, ...data.posts]);
-      // setUserPosts([ ...userPosts, ...data.posts ]);
+      // setUserPosts((prev) => [...prev, ...data.posts]);
+      setUserPosts((prev) => {
+        const newPosts = data.posts.filter(
+          (newPost) =>
+            !prev.some((existingPost) => existingPost._id === newPost._id)
+        );
+        return [...prev, ...newPosts];
+      });
       if (page === 1) setTotalPosts(() => data.total);
     } catch (err) {
       console.log("No posts found.");
@@ -85,15 +91,11 @@ export default function ProfilePage() {
     };
 
     init();
-
-    // if (isAuthUser && params.username !== loggedUser?.username) {
-    //   navigate(`/profile/${loggedUser.username}`);
-    // }
   }, [page, loggedUser]);
 
-  const handleCreatePost = async (content, image) => {
+  const handleCreatePost = async (title, content, image) => {
     try {
-      const newPost = await createPost(content, image);
+      const newPost = await createPost(title, content, image);
       setUserPosts((prevPosts) => [newPost, ...prevPosts]);
     } catch (error) {
       console.log("Error creating post", error);
@@ -110,9 +112,16 @@ export default function ProfilePage() {
     }
   };
 
-  const handleUpdatePost = async (content, image, postId, imageRemoved) => {
+  const handleUpdatePost = async (
+    title,
+    content,
+    image,
+    postId,
+    imageRemoved
+  ) => {
     try {
       const updatedPost = await updatePost(
+        title,
         content,
         image,
         postId,
@@ -127,42 +136,32 @@ export default function ProfilePage() {
     }
   };
 
+  const handleProfileUpdate = async (updatedData) => {
+    try {
+      const { data } = await axios.put(
+        `${baseURL}/api/auth/update`,
+        updatedData,
+        { withCredentials: true }
+      );
+
+      // update user profile and logged user data in render
+      setLoggedUser(data.user);
+      setUserProfile(data.user);
+
+      // update user posts render
+      setPage(1);
+      setUserPosts([]);
+      await fetchUserPosts(data.user._id);
+      toast.success("Profile updated");
+    } catch (error) {
+      toast.error("Error updating profile. Try again!");
+    }
+  };
+
   return (
     <div>
       <Header />
       {userProfile && (
-        // <div className="flex items-center gap-3 m-5 md:mx-auto w-full md:w-[70%]">
-        //   <div className="avatar">
-        //     <div className="w-15 md:w-25 rounded-full">
-        //       <img src={userProfile.profilePicture} />
-        //     </div>
-        //   </div>
-
-        //   <div className="flex md:flex-col gap-2">
-        //     <h2 className="card-title text-lg md:text-3xl">
-        //       {userProfile.username}
-        //     </h2>
-        //     {isAuthUser && (
-        //       <div
-        //         className="flex  md:justify-normal justify-between items-center gap-1 bg-[#8a6bf138] btn rounded-full md:rounded-xl"
-        //         onClick={() => modalRef.current?.showModal()}
-        //       >
-        //         <svg
-        //           xmlns="http://www.w3.org/2000/svg"
-        //           viewBox="0 0 24 24"
-        //           fill="#8a6bf1"
-        //           className="size-4"
-        //         >
-        //           <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
-        //         </svg>
-
-        //         <span className="text-[#8a6bf1] hidden md:block text-sm p-[3px] font-semibold ">
-        //           Edit Profile
-        //         </span>
-        //       </div>
-        //     )}
-        //   </div>
-        // </div>
         <div className="flex flex-col md:flex-row items-center gap-4 md:mx-auto w-full md:w-[70%]">
           <div className="avatar">
             <div className="w-20 md:w-32 rounded-full">
@@ -216,7 +215,8 @@ export default function ProfilePage() {
         hasMore={userPosts.length < totalPosts}
         loader={
           <h4 className="text-center my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
-            Loading more...
+            Loading more
+            <span className="ml-3 loading loading-dots loading-sm text-[#8a6bf1]"></span>
           </h4>
         }
         endMessage={
@@ -235,7 +235,10 @@ export default function ProfilePage() {
         ))}
       </InfiniteScroll>
 
-      <EditProfileForm modalRef={modalRef}></EditProfileForm>
+      <EditProfileForm
+        modalRef={modalRef}
+        handleProfileUpdate={handleProfileUpdate}
+      ></EditProfileForm>
     </div>
   );
 }

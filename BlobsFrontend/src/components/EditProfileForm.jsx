@@ -9,6 +9,7 @@ const baseURL = import.meta.env.VITE_API_BASE_URL;
 export default function EditProfileForm(props) {
   const navigate = useNavigate();
   const { loggedUser, setLoggedUser } = useUser();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -51,11 +52,45 @@ export default function EditProfileForm(props) {
     dialogRef.current?.close();
   };
 
+  //   const handleUpdate = async (data) => {
+  //     setLoading(true);
+  //     const formData = new FormData();
+
+  //     formData.append("username", data.username);
+  //     formData.append("email", data.email);
+  //     if (data.password) {
+  //       formData.append("password", data.password);
+  //       formData.append("confirmPassword", data.confirmPassword);
+  //     }
+  //     if (data.profilePicture?.[0]) {
+  //       formData.append("profilePicture", data.profilePicture[0]);
+  //     }
+
+  //     try {
+  //       const { data } = await axios.put(`${baseURL}/api/auth/update`, formData, {
+  //         withCredentials: true,
+  //       });
+
+  //       setLoggedUser(data.user);
+  //       navigate(`/profile/${data.user.username}`);
+  //       setLoading(false);
+  //       dialogRef.current?.close();
+  //     } catch (error) {
+  //       setError("root.serverError", {
+  //         type: "500",
+  //         message: "The username or email already exists.",
+  //       });
+  //       console.log("Could not update. Try again");
+  //     }
+  //   };
+
   const handleUpdate = async (data) => {
+    setLoading(true);
     const formData = new FormData();
 
     formData.append("username", data.username);
     formData.append("email", data.email);
+
     if (data.password) {
       formData.append("password", data.password);
       formData.append("confirmPassword", data.confirmPassword);
@@ -65,19 +100,15 @@ export default function EditProfileForm(props) {
     }
 
     try {
-      const { data } = await axios.put(`${baseURL}/api/auth/update`, formData, {
-        withCredentials: true,
-      });
+      await props.handleProfileUpdate(formData);
 
-      setLoggedUser(data.user);
-      navigate(`/profile/${data.user.username}`);
-      dialogRef.current?.close();
+      // Navigate to the updated profile page
+      navigate(`/profile/${data.username}`);
     } catch (error) {
-      setError("root.serverError", {
-        type: "500",
-        message: "The username or email already exists.",
-      });
-      console.log("Could not update. Try again");
+      console.error("Error updating profile:", error);
+    } finally {
+      setLoading(false);
+      dialogRef.current?.close();
     }
   };
 
@@ -241,6 +272,9 @@ export default function EditProfileForm(props) {
               className="btn text-white text-lg bg-[#8a6bf1] hover:bg-[#8a6bf1dd] rounded-2xl h-[50px] w-full sm:w-[100px]"
             >
               Save
+              {loading && (
+                <span className="loading loading-spinner loading-xs"></span>
+              )}
             </button>
           </div>
 

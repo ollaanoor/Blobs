@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -23,7 +23,10 @@ export default function RegisterPage() {
 
   const profilePicture = watch("profilePicture");
 
+  const [loading, setLoading] = useState(false);
+
   const onSubmit = async (data) => {
+    setLoading(true);
     const formData = new FormData();
 
     formData.append("username", data.username);
@@ -50,6 +53,7 @@ export default function RegisterPage() {
       });
       console.log("Could not register. Try again");
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -200,6 +204,9 @@ export default function RegisterPage() {
               className="btn rounded-3xl text-white bg-[#8a6bf1] btn-lg mt-4 hover:shadow-lg transition"
             >
               Sign up
+              {loading && (
+                <span className="loading loading-spinner loading-xs"></span>
+              )}
             </button>
 
             <div className="text-center md:text-left mt-2">

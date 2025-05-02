@@ -90,7 +90,7 @@ const updatePost = async (req, res) => {
   if (req.file) {
     const { url } = await uploadToImgBB(req.file.buffer, req.file.originalname);
     post.image = url;
-  } else if (req.body.imageRemoved == "true") {
+  } else if (req.body.imageRemoved === "true") {
     post.image = "";
   }
 

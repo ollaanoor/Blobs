@@ -17,6 +17,8 @@ export default function EditPostForm(props) {
   };
   const [form, setForm] = useState(defaultForm);
   const [imageRemoved, setImageRemoved] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const dialogRef = props.modalRef;
 
   const handleImageChange = (e) => {
@@ -47,14 +49,16 @@ export default function EditPostForm(props) {
     dialogRef.current?.close();
   };
 
-  const handleUpdate = () => {
-    props.updatePost(
+  const handleUpdate = async () => {
+    setLoading(true);
+    await props.updatePost(
       form.title,
       form.content,
       form.image,
       props.post._id,
       imageRemoved
     );
+    setLoading(false);
     dialogRef.current?.close();
   };
 
@@ -180,6 +184,9 @@ export default function EditPostForm(props) {
               className="btn text-white text-lg bg-[#8a6bf1] hover:bg-[#8a6bf1dd] rounded-2xl h-[50px] w-[100px]"
             >
               Edit
+              {loading && (
+                <span className="loading loading-spinner loading-xs"></span>
+              )}
             </button>
           </div>
 

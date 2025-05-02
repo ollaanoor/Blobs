@@ -87,7 +87,7 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <div className="">
+      <div id="create" className="">
         {loggedUser && (
           <div>
             <div className="card bg-base-100 w-full md:w-[70%] h-fit shadow-sm mx-auto my-5 md:rounded-4xl">
@@ -110,16 +110,6 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* {posts.map((post) => (
-        <Posts
-          loggedUser={loggedUser}
-          key={post._id}
-          post={post}
-          deletePost={handleDeletePost}
-          updatePost={handleUpdatePost}
-        />
-      ))} */}
-
         <InfiniteScroll
           dataLength={posts.length}
           next={() => {
@@ -129,7 +119,8 @@ export default function HomePage() {
           hasMore={posts.length < totalPosts}
           loader={
             <h4 className="text-center my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
-              Loading more...
+              Loading more
+              <span className="ml-3 loading loading-dots loading-sm text-[#8a6bf1]"></span>
             </h4>
           }
           endMessage={
@@ -147,8 +138,10 @@ export default function HomePage() {
             />
           ))}
         </InfiniteScroll>
-        {!loggedUser && (
-          <div className="btn btn-circle w-15 h-15 bg-[#8a6bf1] hover:bg-[#8a6bf1dd] fixed right-5 md:right-10 bottom-5 md:bottom-10">
+
+        {/* {!loggedUser && ( */}
+        <div className="btn btn-circle w-15 h-15 bg-[#8a6bf1] hover:bg-[#8a6bf1dd] fixed right-5 md:right-10 bottom-5 md:bottom-10">
+          {!loggedUser && (
             <Link to="/login">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -159,8 +152,21 @@ export default function HomePage() {
                 <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
               </svg>
             </Link>
-          </div>
-        )}
+          )}
+          {loggedUser && (
+            <a href="#create">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                fill="white"
+                className="size-8"
+              >
+                <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
+              </svg>
+            </a>
+          )}
+        </div>
+        {/* )} */}
       </div>
     </>
   );

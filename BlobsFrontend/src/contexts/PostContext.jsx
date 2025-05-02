@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const PostContext = createContext();
 
 export const PostProvider = ({ children }) => {
-
   // API Calls
   const createPost = async (title, content, image) => {
     const formData = new FormData();
@@ -31,25 +31,24 @@ export const PostProvider = ({ children }) => {
       //   setPosts((prevPosts) => [post, ...prevPosts]);
       //   setPosts([post, ...posts]);
       // console.log("API Response:", post);
+      toast.success("Post created");
       return post;
     } catch (error) {
-      console.log("Could not post. Try again");
+      toast.error("Error creating post. Try again!");
     }
   };
 
   const deletePost = async (postId) => {
     try {
-      const { data } = await axios.delete(
-        `${baseURL}/api/posts/${postId}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const { data } = await axios.delete(`${baseURL}/api/posts/${postId}`, {
+        withCredentials: true,
+      });
       //   const newPosts = posts.filter((post) => post._id != postId);
       //   setPosts(newPosts);
+      toast.success("Post deleted");
       return true;
     } catch (error) {
-      console.log("Could not delete post. Try again");
+      toast.error("Error deleting post. Try again!");
     }
   };
 
@@ -64,7 +63,7 @@ export const PostProvider = ({ children }) => {
     }
 
     if (imageRemoved) {
-      formData.append("imageRemoved", true);
+      formData.append("imageRemoved", "true");
     }
 
     try {
@@ -82,9 +81,10 @@ export const PostProvider = ({ children }) => {
       //   const updatedPosts = posts.map((p) => (p._id === post._id ? post : p));
       //   setPosts(updatedPosts);
 
+      toast.success("Post updated");
       return post;
     } catch (error) {
-      console.log("Could not post. Try again");
+      toast.error("Error editing post. Try again!");
     }
   };
 

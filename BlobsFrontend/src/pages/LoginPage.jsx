@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -20,7 +20,10 @@ export default function LoginPage() {
     clearErrors,
   } = useForm();
 
+  const [loading, setLoading] = useState(false);
+
   const login = async (form) => {
+    setLoading(true);
     try {
       const { data } = await axios.post(
         `${baseURL}/api/auth/login`,
@@ -42,6 +45,7 @@ export default function LoginPage() {
       });
       console.log("Could not login. Try again");
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -122,6 +126,9 @@ export default function LoginPage() {
               className="btn rounded-3xl text-white bg-[#8a6bf1] btn-lg mt-4 hover:shadow-lg"
             >
               Login
+              {loading && (
+                <span className="loading loading-spinner loading-xs"></span>
+              )}
             </button>
 
             <div className="text-center md:text-left">
