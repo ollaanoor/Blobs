@@ -22,9 +22,9 @@ export const PostProvider = ({ children }) => {
         `${baseURL}/api/posts`,
         formData,
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          // headers: {
+          //   "Content-Type": "multipart/form-data",
+          // },
           withCredentials: true,
         }
       );
