@@ -28,7 +28,7 @@ export default function LoginPage() {
           ...form,
         },
         {
-          withCredentials: true,
+          withCredentials: include,
         }
       );
 
