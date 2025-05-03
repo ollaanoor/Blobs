@@ -51,6 +51,7 @@ const getPostByUserId = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
+    console.log(req.user);
     let image = null;
 
     if (req.file) {
@@ -59,10 +60,6 @@ const createPost = async (req, res) => {
         req.file.originalname
       );
       image = url;
-    }
-
-    if (!req.user._id) {
-      return res.status(401).json({ message: 'Unauthorized' });
     }
 
     const post = new Post({
