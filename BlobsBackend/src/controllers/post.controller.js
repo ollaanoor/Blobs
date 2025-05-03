@@ -61,7 +61,7 @@ const createPost = async (req, res) => {
       image = url;
     }
 
-    if (!req.user) {
+    if (!req.user._id) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
