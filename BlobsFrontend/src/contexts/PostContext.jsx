@@ -30,7 +30,7 @@ export const PostProvider = ({ children }) => {
       );
       //   setPosts((prevPosts) => [post, ...prevPosts]);
       //   setPosts([post, ...posts]);
-      // console.log("API Response:", post);
+      console.log("API Response:", post);
       toast.success("Post created");
       return post;
     } catch (error) {

@@ -60,11 +60,11 @@ export default function CreatePost(props) {
     <>
       <textarea
         rows="1"
-        maxLength="50"
+        maxLength="100"
         name="title"
         {...register("title", {
           maxLength: {
-            value: 50,
+            value: 100,
             message: "Max title length reached.",
           },
         })}
@@ -80,12 +80,12 @@ export default function CreatePost(props) {
       )}
       <textarea
         rows="3"
-        maxLength="800"
+        maxLength="1000"
         name="content"
         {...register("content", {
           required: "Content is required.",
           maxLength: {
-            value: 800,
+            value: 1000,
             message: "Max content length reached.",
           },
         })}
