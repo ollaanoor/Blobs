@@ -61,6 +61,8 @@ const createPost = async (req, res) => {
       image = url;
     }
 
+    console.log(req.user);
+
     const post = new Post({
       ...req.body,
       image,
