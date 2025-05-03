@@ -118,7 +118,7 @@ export default function Posts(props) {
               <div className="w-10 md:w-12 rounded-full">
                 <img src={user.profilePicture} />
               </div>
-              <h2 className="card-title text-lg md:text-xl font-bold mx-3">
+              <h2 className="card-title text-md md:text-lg font-bold mx-3 hover:underline">
                 <NavLink
                   to={`/profile/${user.username}`}
                   // state={{ userId: user._id }}
@@ -128,7 +128,7 @@ export default function Posts(props) {
               </h2>
             </div>
             <div className="justify-end ml-6">
-              <span className="text-gray-400 font-medium text-sm md:text-lg">{createdAt}</span>
+              <span className="text-gray-400 font-medium md:font-semibold text-sm md:text-md">{createdAt}</span>
               {props.post.createdAt != props.post.updatedAt && (
                 <div className="text-gray-400 font-medium flex gap-1 justify-end">
                   <svg
@@ -143,7 +143,7 @@ export default function Posts(props) {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-sm md:text-lg">Edited</span>
+                  <span className="text-sm md:text-md font-medium md:font-semibold">Edited</span>
                 </div>
               )}
             </div>
