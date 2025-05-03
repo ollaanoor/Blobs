@@ -10,7 +10,9 @@ const baseURL = import.meta.env.VITE_API_BASE_URL;
 export default function Posts(props) {
   const { loggedUser } = useUser();
   
-  let date = new Date(props.post?.createdAt);
+  if (!props.post) return null;
+  
+  let date = new Date(props.post.createdAt);
   let createdAt = `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
