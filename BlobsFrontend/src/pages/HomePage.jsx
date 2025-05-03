@@ -129,7 +129,7 @@ export default function HomePage() {
             </p>
           }
         >
-          {posts.map((post) => (
+          {posts?.map((post) => (
             <Posts
               key={post._id}
               post={post}
