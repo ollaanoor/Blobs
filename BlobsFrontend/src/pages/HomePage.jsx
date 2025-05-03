@@ -90,15 +90,15 @@ export default function HomePage() {
       <div id="create" className="">
         {loggedUser && (
           <div>
-            <div className="card bg-base-100 w-full md:w-[70%] h-fit shadow-sm mx-auto my-5 md:rounded-4xl">
+            <div className="card-sm md:card-md bg-base-100 w-full md:w-[70%] h-fit shadow-sm mx-auto my-5 md:rounded-4xl">
               <div className="card-body">
                 <div className="flex items-center gap-3">
                   <div className="avatar">
-                    <div className="w-12 rounded-full ml-2">
+                    <div className="w-10 md:w-12 rounded-full ml-2">
                       <img src={loggedUser.profilePicture} />
                     </div>
                   </div>
-                  <h2 className="card-title text-xl">{loggedUser.username}</h2>
+                  <h2 className="card-title text-lg md:text-xl">{loggedUser.username}</h2>
                 </div>
                 <CreatePost createPost={handleCreatePost} />
               </div>

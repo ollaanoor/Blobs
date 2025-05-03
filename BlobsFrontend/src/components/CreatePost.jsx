@@ -70,7 +70,7 @@ export default function CreatePost(props) {
         })}
         value={form.title}
         onChange={handleChange}
-        className="rounded-lg p-3 w-full textarea-xl font-semibold mt-3 resize-none"
+        className="rounded-lg p-3 w-full outline-white textarea-lg md:textarea-xl font-semibold mt-3 resize-none"
         placeholder="Add a title"
       ></textarea>
       {errors.title && (
@@ -91,7 +91,7 @@ export default function CreatePost(props) {
         })}
         value={form.content}
         onChange={handleChange}
-        className="textarea textarea-ghost w-full textarea-xl mt-3 resize-none"
+        className="textarea textarea-ghost outline-white w-full textarea-lg md:textarea-xl mt-3 resize-none"
         placeholder="Drop your thoughts..."
       ></textarea>
       {errors.content && (
@@ -136,7 +136,7 @@ export default function CreatePost(props) {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="#8a6bf1"
-            className="size-8"
+            className="size-6 md:size-8"
           >
             <path
               strokeLinecap="round"
@@ -158,14 +158,14 @@ export default function CreatePost(props) {
           {(form.title || form.content || form.image) && (
             <button
               onClick={cancelCreatePost}
-              className="btn text-[#8a6bf1] text-lg bg-white hover:bg-[#8a6bf138] rounded-2xl h-[50px] w-[100px]"
+              className="btn text-[#8a6bf1] text-md md:text-lg bg-white hover:bg-[#8a6bf138] rounded-2xl h-[40px] md:h-[50px] w-[90px] md:w-[100px]"
             >
               Cancel
             </button>
           )}
           <button
             onClick={handleSubmit(handleCreate)}
-            className="btn text-white text-lg bg-[#8a6bf1] hover:bg-[#8a6bf1dd] rounded-2xl h-[50px] w-[100px]"
+            className="btn text-white text-md md:text-lg bg-[#8a6bf1] hover:bg-[#8a6bf1dd] rounded-2xl h-[40px] md:h-[50px] w-[90px] md:w-[100px]"
           >
             Post
             {loading && (
