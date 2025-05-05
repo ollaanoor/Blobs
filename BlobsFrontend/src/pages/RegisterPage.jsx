@@ -101,7 +101,7 @@ export default function RegisterPage() {
                 type="file"
                 accept=".jpg,.jpeg,.png"
                 {...register("profilePicture")}
-                className="file-input file-input-sm rounded-lg w-23"
+                className="file-input file-input-sm rounded-lg w-25"
               />
             </div>
 
