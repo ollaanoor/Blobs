@@ -49,7 +49,7 @@ export default function PostDetailsPage() {
   return (
     <div>
       <Header />
-      <div className="card bg-base-100 w-full md:w-[70%] h-fit max-h-[800px] shadow-sm mx-auto my-3 md:my-5 md:rounded-4xl">
+      <div className="card bg-base-100 w-full md:w-[70%] h-fit shadow-sm mx-auto my-3 md:my-5 md:rounded-4xl">
         <div className="card-body w-full">
           {loggedUser && loggedUser._id == post.user && (
             <div className="dropdown dropdown-end absolute top-4 right-5 hover:bg-[#8a6bf150] transition p-1 rounded-full">
