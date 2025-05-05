@@ -51,6 +51,7 @@ const getPostByUserId = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
+    console.log(req.user);
     let image = null;
 
     if (req.file) {
@@ -61,7 +62,7 @@ const createPost = async (req, res) => {
       image = url;
     }
 
-    const post = new Post({
+    const post = await new Post({
       ...req.body,
       image,
       user: req.user._id,
