@@ -152,11 +152,11 @@ export default function PostDetailsPage() {
             </div>
           </div>
           {post.title && (
-            <p className="text-sm md:text-lg font-semibold mt-3 ml-2 max-w-[95%]">
+            <p className="text-sm md:text-lg font-semibold mt-3 ml-2 max-w-[95%] whitespace-pre-line">
               {post.title}
             </p>
           )}
-          <p className="text-sm md:text-lg font-normal mt-3 ml-2 max-w-[95%]">
+          <p className="text-sm md:text-lg font-normal mt-3 ml-2 max-w-[95%] whitespace-pre-line">
             {post.content}
           </p>
         </div>

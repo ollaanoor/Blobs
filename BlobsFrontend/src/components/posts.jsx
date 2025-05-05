@@ -163,11 +163,11 @@ export default function Posts(props) {
                 }}
               >
             {props.post.title && (
-                <p className="text-sm md:text-lg font-semibold mt-3 ml-2 truncate max-w-[95%] hover:underline">
+                <p className="text-sm md:text-lg font-semibold mt-3 ml-2 whitespace-pre-line truncate max-w-[95%] hover:underline">
                   {props.post.title}
                 </p>
             )}
-            <p className="text-sm md:text-lg font-normal mt-3 ml-2 truncate-3-lines max-w-[95%]">
+            <p className="text-sm md:text-lg font-normal mt-3 ml-2 whitespace-pre-line truncate-3-lines max-w-[95%]">
               {props.post.content}
             </p>
             </Link>
