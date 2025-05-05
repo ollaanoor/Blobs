@@ -18,6 +18,7 @@ export default function HomePage() {
   const { createPost, deletePost, updatePost } = usePostAPI();
 
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [page, setPage] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
@@ -27,6 +28,7 @@ export default function HomePage() {
   if (cursor) query.cursor = cursor;
 
   useEffect(() => {
+    // setLoading(true);
     axios
       .get(`${baseURL}/api/posts`, {
         params: query,
@@ -37,6 +39,7 @@ export default function HomePage() {
         setPosts((prev) => [...prev, ...res.data.posts]);
         // setPosts([ ...posts, ...res.data.posts ]);
         if (page === 1) setTotalPosts(() => res.data.total);
+        setLoading(false);
       })
       .catch((err) => console.error(err));
   }, [page]);
@@ -98,7 +101,9 @@ export default function HomePage() {
                       <img src={loggedUser.profilePicture} />
                     </div>
                   </div>
-                  <h2 className="card-title text-lg md:text-xl">{loggedUser.username}</h2>
+                  <h2 className="card-title text-lg md:text-xl">
+                    {loggedUser.username}
+                  </h2>
                 </div>
                 <CreatePost createPost={handleCreatePost} />
               </div>
@@ -124,9 +129,20 @@ export default function HomePage() {
             </h4>
           }
           endMessage={
-            <p className="my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
-              No posts to show
-            </p>
+            // <p className="my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
+            //   No posts to show
+            // </p>
+            loading && posts.length === 0 ? (
+              <div className="skeleton w-full md:w-[70%] h-[500px] mx-auto my-5 rounded-4xl"></div>
+            ) : posts.length === 0 ? (
+              <p className="my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
+                No posts to show
+              </p>
+            ) : (
+              <p className="my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
+                You've reached the end.
+              </p>
+            )
           }
         >
           {posts.map((post) => (

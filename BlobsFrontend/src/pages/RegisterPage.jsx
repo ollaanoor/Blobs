@@ -99,6 +99,7 @@ export default function RegisterPage() {
               />
               <input
                 type="file"
+                accept=".jpg,.jpeg,.png"
                 {...register("profilePicture")}
                 className="file-input file-input-sm rounded-lg w-23"
               />

@@ -25,6 +25,7 @@ export default function ProfilePage() {
   // States
   const [userProfile, setUserProfile] = useState();
   const [userPosts, setUserPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Infinite Scroll States
   const [page, setPage] = useState(1);
@@ -81,10 +82,12 @@ export default function ProfilePage() {
   };
 
   useEffect(() => {
+    // setLoading(true);
     const init = async () => {
       const user = await fetchUserProfile();
       if (user) {
         await fetchUserPosts(user._id);
+        setLoading(false);
       } else {
         navigate("/error");
       }
@@ -220,9 +223,20 @@ export default function ProfilePage() {
           </h4>
         }
         endMessage={
-          <p className="my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
-            No posts to show
-          </p>
+          // <p className="my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
+          //   No posts to show
+          // </p>
+          loading && userPosts.length === 0 ? (
+            <div className="skeleton w-full md:w-[70%] h-[500px] mx-auto my-5 rounded-4xl"></div>
+          ) : userPosts.length === 0 ? (
+            <p className="my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
+              No posts to show
+            </p>
+          ) : (
+            <p className="my-5 text-[#8a6bf1] bg-[#8a6bf144] w-fit mx-auto p-2 rounded-xl font-bold">
+              You've reached the end.
+            </p>
+          )
         }
       >
         {userPosts.map((post) => (

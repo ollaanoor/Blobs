@@ -48,12 +48,11 @@ function App() {
             color: "#ffffff",
           },
 
-          // Default options for specific types
           success: {
             duration: 3000,
             iconTheme: {
-              primary: "#ffffff",   // Icon color
-              secondary: "#8a6bf1", // Icon background
+              primary: "#ffffff",   
+              secondary: "#8a6bf1", 
             },
           },
           
@@ -61,7 +60,7 @@ function App() {
             duration: 5000,
             iconTheme: {
               primary: "#ffffff",
-              secondary: "#f87171", // You can customize for errors
+              secondary: "#f87171", 
             },
           },
         }}

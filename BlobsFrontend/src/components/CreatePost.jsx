@@ -149,7 +149,7 @@ export default function CreatePost(props) {
           </span>
           <input
             type="file"
-            accept="image/*"
+            accept=".jpg,.jpeg,.png"
             onChange={handleImageChange}
             className="hidden"
           />

@@ -175,6 +175,7 @@ export default function EditPostForm(props) {
               <span className="text-[#8a6bf1] font-medium">Edit Image</span>
               <input
                 type="file"
+                accept=".jpg,.jpeg,.png"
                 onChange={handleImageChange}
                 className="hidden"
               />
