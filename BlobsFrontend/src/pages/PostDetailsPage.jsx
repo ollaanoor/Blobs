@@ -1,56 +1,57 @@
-import axios from "axios";
-import React, { useRef } from "react";
-import { useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { useUser } from "../contexts/UserContext";
-import EditPostForm from "./EditPostForm";
-import { Link, NavLink } from "react-router";
+import { Navigate, NavLink, useLocation, useNavigate } from "react-router";
+import EditPostForm from "../components/EditPostForm";
+import { usePostAPI } from "../contexts/PostContext";
+import Header from "../components/header";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
-
-export default function Posts(props) {
+export default function PostDetailsPage() {
   const { loggedUser } = useUser();
+  const { deletePost, updatePost } = usePostAPI();
   const modalRef = useRef();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { postDetails, postedByUser, createdAt } = location.state || {};
 
-  if (!props.post) return null;
+  const [post, setPosts] = useState({ ...postDetails });
 
-  let date = new Date(props.post.createdAt);
-  let createdAt = `${date.toLocaleDateString()} ${date.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  })}`;
-
-  const [user, setUser] = useState({});
-
-  // const getUserbyId = async () => {
-  //   try {
-  //     const { data } = await axios.get(
-  //       `http://localhost:3000/api/users/${props.post.user}`,
-  //       {
-  //         withCredentials: true,
-  //       }
-  //     );
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.log("Could not find user.");
-  //   }
-  // };
-
-  useEffect(() => {
-    if (props.post?.user) {
-      axios
-        .get(`${baseURL}/api/users/${props.post.user}`, {
-          withCredentials: true,
-        })
-        .then((res) => setUser(res.data))
-        .catch((err) => console.error(err));
+  const handleDeletePost = async (postId) => {
+    try {
+      await deletePost(postId);
+      navigate("/home");
+    } catch (error) {
+      console.log("Error deleting post", error);
     }
-  }, [props.post?.user]);
+  };
+
+  const handleUpdatePost = async (
+    title,
+    content,
+    image,
+    postId,
+    imageRemoved
+  ) => {
+    try {
+      const updatedPost = await updatePost(
+        title,
+        content,
+        image,
+        postId,
+        imageRemoved
+      );
+
+      setPosts(updatedPost);
+    } catch (error) {
+      console.log("Error updating post", error);
+    }
+  };
 
   return (
-    <>
+    <div>
+      <Header />
       <div className="card bg-base-100 w-full md:w-[70%] h-fit max-h-[800px] shadow-sm mx-auto my-3 md:my-5 md:rounded-4xl">
         <div className="card-body w-full">
-          {loggedUser && loggedUser._id == props.post.user && (
+          {loggedUser && loggedUser._id == post.user && (
             <div className="dropdown dropdown-end absolute top-4 right-5 hover:bg-[#8a6bf150] transition p-1 rounded-full">
               <label tabIndex={0} className="" role="button">
                 <svg
@@ -92,7 +93,7 @@ export default function Posts(props) {
                   </a>
                 </li>
                 <li>
-                  <a onClick={() => props.deletePost(props.post._id)}>
+                  <a onClick={() => handleDeletePost(post._id)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -117,14 +118,11 @@ export default function Posts(props) {
           <div className="flex justify-between items-center gap-3 mt-5">
             <div className="avatar">
               <div className="w-10 md:w-12 rounded-full">
-                <img src={user.profilePicture} />
+                <img src={postedByUser.profilePicture} />
               </div>
               <h2 className="card-title text-md md:text-lg font-bold mx-3 hover:underline">
-                <NavLink
-                  to={`/profile/${user.username}`}
-                  // state={{ userId: user._id }}
-                >
-                  {user.username}
+                <NavLink to={`/profile/${postedByUser.username}`}>
+                  {postedByUser.username}
                 </NavLink>
               </h2>
             </div>
@@ -132,7 +130,7 @@ export default function Posts(props) {
               <span className="text-gray-400 font-medium md:font-semibold text-sm md:text-md">
                 {createdAt}
               </span>
-              {props.post.createdAt != props.post.updatedAt && (
+              {post.createdAt != post.updatedAt && (
                 <div className="text-gray-400 font-medium flex gap-1 justify-end">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -153,31 +151,20 @@ export default function Posts(props) {
               )}
             </div>
           </div>
-          <div>
-          <Link
-                to="/postDetails"
-                state={{
-                  postDetails: props.post,
-                  postedByUser: user,
-                  createdAt: createdAt,
-                }}
-              >
-            {props.post.title && (
-                <p className="text-sm md:text-lg font-semibold mt-3 ml-2 truncate max-w-[95%] hover:underline">
-                  {props.post.title}
-                </p>
-            )}
-            <p className="text-sm md:text-lg font-normal mt-3 ml-2 truncate-3-lines max-w-[95%]">
-              {props.post.content}
+          {post.title && (
+            <p className="text-sm md:text-lg font-semibold mt-3 ml-2 max-w-[95%]">
+              {post.title}
             </p>
-            </Link>
-          </div>
+          )}
+          <p className="text-sm md:text-lg font-normal mt-3 ml-2 max-w-[95%]">
+            {post.content}
+          </p>
         </div>
-        {props.post.image && (
+        {post.image && (
           <div className="">
             <img
               className="w-full max-h-[400px] object-cover rounded-4xl p-3"
-              src={props.post.image}
+              src={post.image}
               alt="img"
             />
           </div>
@@ -218,9 +205,9 @@ export default function Posts(props) {
 
       <EditPostForm
         modalRef={modalRef}
-        post={props.post}
-        updatePost={props.updatePost}
+        post={post}
+        updatePost={handleUpdatePost}
       ></EditPostForm>
-    </>
+    </div>
   );
 }

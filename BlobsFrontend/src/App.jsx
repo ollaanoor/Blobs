@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import ErrorPage from "./pages/ErrorPage";
 import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage";
+import PostDetailsPage from "./pages/PostDetailsPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
 
         <Route path="/" element={<HomePage />} />
         <Route path="/profile/:username" element={<ProfilePage />} />
+        <Route path="/postDetails" element={<PostDetailsPage />} />
 
         <Route path="/error" element={<ErrorPage />} />
         <Route path="*" element={<ErrorPage />} />
