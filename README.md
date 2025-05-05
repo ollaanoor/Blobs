@@ -86,11 +86,10 @@ JWT_SECRET=your_jwt_secret
 ### 📝 Blog Post Page
 ![Blog Post](./screenshots/postDetails.png)
 
-## 🔗 Live Demo
+## 🔗 Live Site
 
-Check out the live version here: [🌐 View Demo](https://blobs-xi.vercel.app/)
+Check out the live version, the project is deployed and running here: [🌐 Visit Live Site](https://blobs-xi.vercel.app/)
 
 ## 🎥 Demo Video
 
-Want a quick tour? Watch the demo video here:  
-[Watch Demo](https://drive.google.com/file/d/1Fc9_Arxk_h_jcWgMwnlwtNjpQAgigzkI/view?usp=drive_link)
+Want a quick tour? Watch the demo video here: [Watch Demo](https://drive.google.com/file/d/1Fc9_Arxk_h_jcWgMwnlwtNjpQAgigzkI/view?usp=drive_link)
