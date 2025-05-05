@@ -72,11 +72,11 @@ export default function LoginPage() {
 
         <div className="w-full md:w-1/3">
           <fieldset className="bg-[#8a6bf115] rounded-2xl p-6 sm:p-10 flex flex-col gap-5 shadow-md">
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#8a6bf1] mb-4 text-center md:text-left">
+            <h2 className="text-lg sm:text-4xl font-bold text-[#8a6bf1] mb-4 text-center md:text-left">
               Login
             </h2>
 
-            <label className="label text-lg font-semibold">Username</label>
+            <label className="label text-md font-semibold">Username</label>
             <input
               type="text"
               name="username"
@@ -84,7 +84,7 @@ export default function LoginPage() {
                 required: "Username is required.",
               })}
               onChange={() => clearErrors(["username", "root.serverError"])}
-              className={`input input-lg input-bordered w-full text-lg rounded-xl ${
+              className={`input input-lg input-bordered w-full text-md rounded-xl ${
                 errors.username ? "input-error" : ""
               } `}
               placeholder="username"
@@ -96,7 +96,7 @@ export default function LoginPage() {
               </p>
             )}
 
-            <label className="label text-lg font-semibold mt-2">Password</label>
+            <label className="label text-md font-semibold mt-2">Password</label>
             <input
               type="password"
               name="password"
@@ -104,7 +104,7 @@ export default function LoginPage() {
                 required: "Password is required.",
               })}
               onChange={() => clearErrors(["password", "root.serverError"])}
-              className={`input input-lg input-bordered w-full text-lg rounded-xl ${
+              className={`input input-lg input-bordered w-full text-md rounded-xl ${
                 errors.password ? "input-error" : ""
               } `}
               placeholder="password"
@@ -132,12 +132,12 @@ export default function LoginPage() {
             </button>
 
             <div className="text-center md:text-left">
-              <span className="text-lg text-gray-400 font-bold mr-2">
+              <span className="text-md text-gray-400 font-bold mr-2">
                 Don't have an account?
               </span>
               <NavLink
                 to="/register"
-                className="text-lg text-[#8a6bf1] font-medium hover:underline"
+                className="text-md text-[#8a6bf1] font-medium hover:underline"
               >
                 Sign up
               </NavLink>

@@ -64,7 +64,7 @@ export default function RegisterPage() {
 
   return (
     <div>
-      <Header />
+      <Header className="fixed" />
       <div className="flex flex-col md:flex-row items-center justify-center px-6 md:px-20 py-16 gap-12">
         <div className="text-center md:w-1/2 hidden md:block">
           <img
@@ -83,7 +83,7 @@ export default function RegisterPage() {
             encType="multipart/form-data"
             className="bg-[#8a6bf115] rounded-2xl p-6 sm:p-10 flex flex-col gap-5 shadow-md"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#8a6bf1] text-center md:text-left">
+            <h2 className="text-lg sm:text-4xl font-bold text-[#8a6bf1] text-center md:text-left">
               Create an account
             </h2>
 
@@ -106,24 +106,24 @@ export default function RegisterPage() {
             </div>
 
             <div className="flex flex-col gap-3">
-              <label className="label text-lg font-bold">Username</label>
+              <label className="label text-md font-bold">Username</label>
               <input
                 type="text"
                 name="username"
                 {...register("username", { required: "Username is required" })}
                 onChange={() => clearErrors(["username", "root.serverError"])}
-                className={`input input-lg input-bordered w-full text-lg rounded-xl ${
+                className={`input input-lg input-bordered w-full text-md rounded-xl ${
                   errors.username ? "input-error" : ""
                 } `}
                 placeholder="username"
               />
               {errors.username && (
-                <p className="text-error text-md font-semibold">
+                <p className="text-error text-sm font-semibold">
                   {errors.username.message}
                 </p>
               )}
 
-              <label className="label text-lg font-bold">Email</label>
+              <label className="label text-md font-bold">Email</label>
               <input
                 type="email"
                 name="email"
@@ -135,18 +135,18 @@ export default function RegisterPage() {
                   },
                 })}
                 onChange={() => clearErrors(["email", "root.serverError"])}
-                className={`input input-lg input-bordered w-full text-lg rounded-xl ${
+                className={`input input-lg input-bordered w-full text-md rounded-xl ${
                   errors.email ? "input-error" : ""
                 } `}
                 placeholder="xyz@mail.com"
               />
               {errors.email && (
-                <p className="text-error text-md font-semibold">
+                <p className="text-error text-sm font-semibold">
                   {errors.email.message}
                 </p>
               )}
 
-              <label className="label text-lg font-bold">Password</label>
+              <label className="label text-md font-bold">Password</label>
               <input
                 type="password"
                 name="password"
@@ -158,18 +158,18 @@ export default function RegisterPage() {
                   },
                 })}
                 onChange={() => clearErrors(["password", "root.serverError"])}
-                className={`input input-lg input-bordered w-full text-lg rounded-xl ${
+                className={`input input-lg input-bordered w-full text-md rounded-xl ${
                   errors.password ? "input-error" : ""
                 } `}
                 placeholder="password"
               />
               {errors.password && (
-                <p className="text-error text-md font-semibold">
+                <p className="text-error text-sm font-semibold">
                   {errors.password.message}
                 </p>
               )}
 
-              <label className="label text-lg font-bold">
+              <label className="label text-md font-bold">
                 Confirm Password
               </label>
               <input
@@ -183,20 +183,20 @@ export default function RegisterPage() {
                 onChange={() =>
                   clearErrors(["confirmPassword", "root.serverError"])
                 }
-                className={`input input-lg input-bordered w-full text-lg rounded-xl ${
+                className={`input input-lg input-bordered w-full text-md rounded-xl ${
                   errors.confirmPassword ? "input-error" : ""
                 } `}
                 placeholder="confirm password"
               />
               {errors.confirmPassword && (
-                <p className="text-error text-md font-semibold">
+                <p className="text-error text-sm font-semibold">
                   {errors.confirmPassword.message}
                 </p>
               )}
             </div>
 
             {errors.root?.serverError && (
-              <p className="text-error text-md font-semibold mt-1">
+              <p className="text-error text-sm font-semibold mt-1">
                 {errors.root.serverError.message}
               </p>
             )}
@@ -211,12 +211,12 @@ export default function RegisterPage() {
             </button>
 
             <div className="text-center md:text-left mt-2">
-              <span className="text-lg text-gray-400 font-bold mr-2">
+              <span className="text-md text-gray-400 font-bold mr-2">
                 Already have an account?
               </span>
               <NavLink
                 to="/login"
-                className="text-lg text-[#8a6bf1] font-medium hover:underline"
+                className="text-md text-[#8a6bf1] font-medium hover:underline"
               >
                 Log in
               </NavLink>

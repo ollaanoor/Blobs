@@ -65,7 +65,7 @@ const createPost = async (req, res) => {
     const post = new Post({
       ...req.body,
       image,
-      user: "567",
+      user: req.user._id,
     });
 
     await post.save();

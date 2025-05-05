@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import { useUser } from "../contexts/UserContext";
 
@@ -7,11 +7,13 @@ const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Header() {
   const { loggedUser, setLoggedUser } = useUser();
+  const [loading, setLoading] = useState();
 
   const navigate = useNavigate();
 
   const logout = async () => {
     try {
+      setLoading(true);
       await axios.post(
         `${baseURL}/api/auth/logout`,
         {},
@@ -19,6 +21,7 @@ export default function Header() {
       );
 
       setLoggedUser(null);
+      setLoading(false);
       navigate("/login");
     } catch (error) {
       console.error("Logout failed", error);
@@ -124,7 +127,12 @@ export default function Header() {
                           d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9"
                         />
                       </svg>
-                      <span className="text-sm md:text-lg">Logout</span>
+                      <span className="text-sm md:text-lg">
+                        Logout
+                        {loading && (
+                          <span className="loading loading-spinner loading-xs ml-3"></span>
+                        )}
+                      </span>
                     </a>
                   </li>
                 </ul>
