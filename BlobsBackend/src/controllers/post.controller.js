@@ -62,10 +62,10 @@ const createPost = async (req, res) => {
       image = url;
     }
 
-    const post = await new Post({
+    const post = new Post({
       ...req.body,
       image,
-      user: req.user._id,
+      user: "567",
     });
 
     await post.save();
